@@ -59,6 +59,7 @@ def indexing_multidimensional_arrays():
 
 def challenge_1():
     dailywts = 185 - np.arange(5*7)/5
+    print(dailywts)
     results = (dailywts[5::7]+dailywts[6::7])/2
     print(results)
 
@@ -73,14 +74,110 @@ def challenge_2():
         [5,1],
         [6,3]
     ])
-    print(locs)
+    print(locs[:0])
+    print(locs[:1])
     print(locs[:,0])
     print(locs[:,1])
     found_gold = gold[(locs[:,0],locs[:,1])]
     print(found_gold)
 
 def challenge_3():
-    
+    dist = np.abs(np.linspace([17,32],[28,36], num=3, axis=1) - 30)
+    print(dist)
+    print(dist[[0,1],[2,0]])
+
+def broadcasting():
+    arr1 = np.random.randint(low=0, high=10, size=(3,3,1))
+    arr2 = np.random.randint(low=0, high=10, size=(1,2))
+    arr3 = np.random.randint(low=0, high=10, size=(1,3))
+    print(arr1, arr2, arr3, sep='\n---\n')
+    result = arr1 + arr3
+    print(result)
+
+def newaxis():
+    arr1 = np.arange(4)
+    arr2 = np.arange(3)
+    results = arr1[:,np.newaxis] - arr2[np.newaxis,:]
+    print(results)
+
+def reshape():
+    arr1 = np.arange(8)
+    print(arr1)
+    bar = arr1.reshape(2,4)
+    print(bar)
+    bar = bar.reshape((4,2), order='F')
+    print(bar)
+    bar = bar.reshape((2,-1))
+    print(bar)
+
+def booleanindexing():
+    arr = np.array([[3,9,7],[2,0,3],[3,3,1]])
+    print(arr)
+
+    mask = arr == 3
+    arr[mask] = 0
+    print(arr)
+
+    rows_1and_3 = np.array([True, False, True])
+    cols_2and_3 = np.array([False, True, True])
+
+    print(arr[rows_1and_3])
+    print(arr[cols_2and_3])
+    print(arr[rows_1and_3,cols_2and_3])
+
+    names = np.array(['Dennis', 'Dee', 'Charlie', 'Mac', 'Frank'])
+    ages = np.array([43, 44, 43, 42, 74])
+    genders = np.array(['M', 'F', 'M', 'M','M'])
+
+    # Who is at least 44?
+    agemask = ages >= 44
+    print(agemask)
+    print(f'names at least 44: {names[agemask]}')
+    # Which males are over 42 ?
+    mask = (genders == 'M') & (ages > 42)
+    print(mask)
+    print(f'males above 42 are: {names[mask]}')
+    # Who are not a male or is younger than 43
+    mask = ~(genders == 'M') | (ages < 43)
+    print(mask)
+    print(f'Not male or younger than 43 are: {names[mask]}')
+
+def random():
+    arr = np.random.randint(low=1, high=7, size=3)
+    print(arr)
+
+def challenge_4():
+    generator = np.random.default_rng(1010)
+    love_scores = np.round(generator.uniform(low=0, high=100, size=10), 2)
+    print(love_scores)
+    love_scores_bis = love_scores[:,np.newaxis]
+    print(love_scores_bis)
+    results = np.abs(love_scores - love_scores_bis)
+    print(results)
+
+def challenge_5():
+    generator = np.random.default_rng(80085)
+    scores = np.round(generator.uniform(low=30, high=100, size=15))
+    print(scores)
+
+    scores[(scores < 60).nonzero()[0][:3]] = 0
+    print(scores)
+
+def challenge_6():
+    fields = np.zeros(shape=(10,10))
+    print(fields)
+    print('\n-----\n')
+    generator = np.random.default_rng(1234)
+    vals = np.round(generator.normal(size=20),2)
+    print(vals)
+    print('\n-----\n')
+    locs = generator.choice(fields.size, len(vals), replace=False)
+    print(locs)
+    print('\n-----\n')
+    fields.ravel()[locs] = vals
+    print(fields)
+
+
 
 #array_motivation()
 #array_basics()
@@ -89,4 +186,12 @@ def challenge_3():
 #indexing_multidimensional_arrays()
 #challenge_1()
 #challenge_2()
-challenge_3()
+#challenge_3()
+#broadcasting()
+#newaxis()
+#reshape()
+#booleanindexing()
+#random()
+#challenge_4()
+#challenge_5()
+challenge_6()
