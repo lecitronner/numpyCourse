@@ -1,6 +1,9 @@
 import numpy as np
 import time
 
+from scipy.stats import fisher_exact
+
+
 def array_motivation():
     prices = []
     N = 60*60*24*365
@@ -177,6 +180,45 @@ def challenge_6():
     fields.ravel()[locs] = vals
     print(fields)
 
+def challenge_7():
+    generator = np.random.default_rng(123)
+    ratings= np.round(generator.uniform(low=0.0, high=10.0, size=(10,2)))
+    ratings[[1,2,7,9], [0,0,0,0]] = np.nan
+    print(ratings)
+
+    results= np.insert(arr=ratings, values=np.where(np.isnan(ratings[:,0]), ratings[:,1], ratings[:,0]),axis=1, obj=2)
+    print(results)
+    results = np.hstack((ratings,np.where(np.isnan(ratings[:,0]), ratings[:,1], ratings[:,0])[:,None]))
+    print(results)
+
+def challenge_8():
+    fish_locs = np.array([
+        [0,0,0],
+        [1,1,2],
+        [0,0,0],
+        [2,1,3],
+        [5,5,4],
+        [5,0,0],
+        [5,0,0],
+        [0,0,0],
+        [2,1,3],
+        [1,3,1]
+    ])
+    print(fish_locs)
+
+    generator = np.random.default_rng(1010)
+    fish_weights = generator.normal(size=10)
+    print(fish_weights)
+
+    sorted_fish_weights = np.argsort(fish_weights)[::-1]
+    print(sorted_fish_weights)
+    print(fish_locs[sorted_fish_weights])
+    uniques, first_indexes = np.unique(fish_locs[sorted_fish_weights], axis=0, return_index=True)
+    print(uniques)
+    print(first_indexes)
+    survivors = sorted_fish_weights[first_indexes]
+    print(survivors)
+
 
 
 #array_motivation()
@@ -194,4 +236,6 @@ def challenge_6():
 #random()
 #challenge_4()
 #challenge_5()
-challenge_6()
+#challenge_6()
+#challenge_7()
+challenge_8()
